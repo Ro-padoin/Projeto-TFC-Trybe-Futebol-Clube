@@ -17,7 +17,7 @@ class Login implements ILogin {
   async login(email:string, password:string): Promise<ISignIn | null> {
     const user = await this.model.login(email, password);
 
-    if (!user) throw new Error('Invalida email or password');
+    if (!user) throw new Error('Invalid email or password');
 
     return user;
   }
