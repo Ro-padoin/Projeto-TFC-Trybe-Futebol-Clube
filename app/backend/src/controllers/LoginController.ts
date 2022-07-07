@@ -10,8 +10,8 @@ class Login {
     try {
       const { email, password } = req.body;
 
-      const result = await this.service.login(email, password);
-      return res.status(200).json(result);
+      const token = await this.service.login(email, password);
+      return res.status(200).json({ token });
     } catch (err) {
       console.log('🚀 ~ file: LoginController.ts ~ line 16 ~ Login ~ login ~ err', err);
       next();
