@@ -1,10 +1,14 @@
 import * as express from 'express';
+import * as cors from 'cors';
+import LoginRouter from './routes/loginRoutes';
 
 class App {
   public app: express.Express;
 
   constructor() {
     this.app = express();
+    this.app.use(cors());
+    this.app.use(express.json());
 
     this.config();
 
@@ -20,9 +24,13 @@ class App {
       next();
     };
 
-    this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use(LoginRouter);
   }
+
+  // this.app.post('/login', (req, res, next) => {
+  //   entityFactory().list(req, res, next);
+  // })
 
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
