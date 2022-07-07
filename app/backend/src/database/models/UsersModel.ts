@@ -4,10 +4,10 @@ import db from '.';
 
 class User extends Model {
   public id!: number;
-  public username: string;
-  public role: string;
-  public email: string;
-  public password: string;
+  public username!: string;
+  public role!: string;
+  public email!: string;
+  public password!: string;
 }
 
 User.init({
@@ -20,6 +20,9 @@ User.init({
   username: {
     allowNull: false,
     type: DataTypes.STRING },
+  role: {
+    allowNull: false,
+    type: DataTypes.STRING },
   email: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -28,13 +31,9 @@ User.init({
     allowNull: false,
     type: DataTypes.STRING,
   },
-  image: {
-    allowNull: false,
-    type: DataTypes.STRING },
 }, {
-  modelName: 'Users',
+  modelName: 'users',
   sequelize: db,
-  tableName: 'users',
   timestamps: false,
   underscored: true,
 });
