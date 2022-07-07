@@ -9,3 +9,8 @@ export interface ILoginRepository extends Partial<UsersModel> {
 export interface ILoginService {
   login(email: string, password: string): Promise<UsersModel | null>;
 }
+
+export interface ILoginSchema {
+  email: string
+  password: string
+}

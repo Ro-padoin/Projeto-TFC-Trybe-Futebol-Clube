@@ -14,7 +14,7 @@ class LoginService implements ILoginService {
     const comparePassword = user ? bcrypt.compareSync(password, user.password) : '';
 
     if (!user || (user.email !== email && !comparePassword)) {
-      throw new Error('Username or password invalid');
+      throw new Error('Incorrect email or password');
     }
 
     const { password: trashPassword, ...payload } = user;
