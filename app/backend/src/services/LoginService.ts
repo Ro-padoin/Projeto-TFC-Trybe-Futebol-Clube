@@ -9,15 +9,18 @@ class LoginService implements ILoginService {
   }
 
   async login(email:string, password:string): Promise<UsersModel | null> {
-    const user = await this.model.login(email);
+    const userExists = await this.model.login(email);
 
-    const comparePassword = user ? bcrypt.compareSync(password, user.password) : '';
+    console.log(userExists);
 
-    if (!user || (user.email !== email && !comparePassword)) {
+    const comparePassword = bcrypt.compareSync(password, userExists?.password as string);
+    console.log(comparePassword);
+
+    if (!userExists || userExists.email !== email || !comparePassword) {
       throw new Error('Incorrect email or password');
     }
 
-    const { password: trashPassword, ...payload } = user;
+    const { password: trashPassword, ...payload } = userExists;
 
     const token = generateToken(payload);
 
