@@ -1,22 +1,11 @@
-export interface ISignIn {
-  data: {
-    id: number,
-    username: string,
-    role: string,
-    email: string,
-    password?: string,
-  },
-  token?: string
-}
+import UsersModel from '../database/models/UsersModel';
 
-export interface IToken {
-  id: number,
-  username: string,
-  role: string,
-  email: string,
+export interface ILoginRepository extends Partial<UsersModel> {
   password?: string,
+  token?: string,
+  login(email: string): Promise<UsersModel | null>
 }
 
-export interface ILogin {
-  login(email: string, password: string): Promise<ISignIn | null>;
+export interface ILoginService {
+  login(email: string, password: string): Promise<UsersModel | null>;
 }

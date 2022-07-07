@@ -28,10 +28,6 @@ class App {
     this.app.use(LoginRouter);
   }
 
-  // this.app.post('/login', (req, res, next) => {
-  //   entityFactory().list(req, res, next);
-  // })
-
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
   }

@@ -1,12 +1,11 @@
-import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-import { IToken } from '../interfaces/index';
+import * as jwt from 'jsonwebtoken';
 
 dotenv.config();
 
 const secretKey: string | undefined = process.env.JWT_SECRET
     || 'un-Y&RyAHU-G_jN4Dzp%ydTJLdMzr8MwZSjG';
 
-const generateToken = (payload: IToken) => jwt.sign(payload, secretKey);
+const generateToken = (payload: string | object | Buffer) => jwt.sign(payload, secretKey);
 
 export default generateToken;

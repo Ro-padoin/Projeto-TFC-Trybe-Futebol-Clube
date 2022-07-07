@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import Repository from '../repositoryModel/Login';
+import Repository from '../repositoryModel/LoginRepository';
 import Service from '../services/LoginService';
 import Controller from '../controllers/LoginController';
 
@@ -13,7 +13,6 @@ const entityFactory = () => {
 const LoginRouter: Router = Router();
 
 LoginRouter.post('/login', (req, res, next) => {
-  console.log('oi');
   entityFactory().login(req, res, next);
 });
 
