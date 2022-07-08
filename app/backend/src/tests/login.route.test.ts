@@ -14,15 +14,11 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 const LOGIN_USER_MOCK = {
-  id: 1,
+  id: 2,
   username: 'User',
-  role:'user',
+  role: 'user',
   email: 'user@user.com',
-  password: 'secret_user' 
-}
-
-const TOKEN_MOCK = {
-  token: 'jkdsfhasdfbasjdhfgasjfasdhasdfgasdiufgyasdofasdoyu',
+  password: '$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO'
 }
 
 const MESSAGE_EMAIL_INVALID = '"email" must be a valid email';
@@ -33,7 +29,7 @@ describe('Teste a rota de login', () => {
 
   let chaiHttpResponse: Response;
 
-  before(async () => {
+  before(() => {
     sinon
       .stub(UsersModel, "findOne")
       .resolves(LOGIN_USER_MOCK as UsersModel);
@@ -65,15 +61,28 @@ describe('Teste a rota de login', () => {
     expect(chaiHttpResponse.body.message).to.be.equal(MESSAGE_PASSWORD_INVALID);
   });
 
-  // it('Teste se ao logar com sucesso retorna 200 e o token', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app).post('/login').send({
-  //       'email': 'user@user.com',
-  //       'password': 'secret_user',
-  //      });
+  it('Teste se ao logar com usuario ou senha que nao existam retorna 401 e mensagem "Incorrect email or password', async () => {
+    try {
+      chaiHttpResponse = await chai
+         .request(app).post('/login').send({
+          "email": "use@user.com",
+          "password": "secret_user"
+        });
+      } catch (error) {
+        expect(chaiHttpResponse.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+        expect(chaiHttpResponse.body.message).to.be.equal(UNAUTHORIZED)
+      }
+  });
 
-  //   expect(chaiHttpResponse.status).to.be.equal(StatusCodes.OK);
-  //   expect(chaiHttpResponse.body.message).to.be.eql(TOKEN_MOCK);
-  // });
+  it('Teste se ao logar com sucesso retorna status 200 e a chave token', async () => {
+        chaiHttpResponse = await chai
+           .request(app).post('/login').send({
+            "email": "user@user.com",
+            "password": "secret_user"
+          });          
+ 
+    expect(chaiHttpResponse.status).to.be.eql(StatusCodes.OK);
+    expect(chaiHttpResponse.body).to.have.a.key('token');
+  });
 });
 

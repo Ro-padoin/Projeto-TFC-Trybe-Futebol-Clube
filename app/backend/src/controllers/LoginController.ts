@@ -7,16 +7,13 @@ class LoginController {
     this.service = service;
   }
 
-  async login(req: Request, res: Response, _next: NextFunction) {
+  async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
       const token = await this.service.login(email, password);
       return res.status(StatusCodes.OK).json({ token });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        res
-          .status(StatusCodes.UNAUTHORIZED).json({ message: error.message });
-      }
+    } catch (error) {
+      next(error);
     }
   }
 }
