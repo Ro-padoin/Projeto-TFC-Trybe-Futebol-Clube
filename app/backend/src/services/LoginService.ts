@@ -19,8 +19,6 @@ class LoginService implements ILoginService {
 
     const { password: trashPassword, ...payload } = userExists;
 
-    console.log({ payload });
-
     const token = generateToken(payload);
 
     return token as unknown as UsersModel;
