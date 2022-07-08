@@ -12,7 +12,7 @@ const validateLogin = (req: Request, res: Response, next: NextFunction) => {
     if (type === 'any.required' || type === 'string.empty') {
       next({ status: StatusCodes.BAD_REQUEST, message });
     }
-    next(next({ status: StatusCodes.BAD_REQUEST, message }));
+    next({ status: StatusCodes.UNPROCESSABLE_ENTITY, message });
   }
   next();
 };
