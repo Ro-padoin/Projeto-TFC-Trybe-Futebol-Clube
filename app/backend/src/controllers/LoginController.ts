@@ -16,6 +16,16 @@ class LoginController {
       next(error);
     }
   }
+
+  async loginValidate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.body.userInfoToken;
+      const role = await this.service.loginValidate(id);
+      return res.status(StatusCodes.OK).json({ role });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default LoginController;

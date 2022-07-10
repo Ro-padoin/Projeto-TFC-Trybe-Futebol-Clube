@@ -28,6 +28,16 @@ class LoginService implements ILoginService {
 
     return token as unknown as UsersModel;
   }
+
+  async loginValidate(id: number): Promise<UsersModel | null> {
+    const userExists = await this.model.loginById(id);
+
+    if (!userExists) {
+      throw new ErrorMiddleware(401, 'User Not Exists');
+    }
+
+    return userExists.role as unknown as UsersModel;
+  }
 }
 
 export default LoginService;

@@ -30,15 +30,13 @@
 
 //   callNextIfInvalid(token, next);
 
-//   jwt.verify(token, secretKey, {
-//     algorithms: ['HS256'], complete: true,
-//   }, (error: jwt.VerifyErrors | null, userInfo: jwt.Jwt | undefined) => {
-//     if (error) {
+//   jwt.verify(token, secretKey, (error: jwt.VerifyErrors | null, decoded: jwt.Jwt | undefined) => {
+//     if (!error) {
 //       next({ status:
 //         StatusCodes.UNAUTHORIZED,
 //       message: 'Expired or invalid token' });
 //     }
-//     req.userInfo = userInfo;
+//     req.user = decoded;
 //   });
 //   next();
 // };
@@ -71,10 +69,14 @@ const validateAuth = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const data = jwt.verify(token, secretKey);
-    req.user = data as TokenPayload;
+    const decoded = jwt.verify(token, secretKey) as TokenPayload;
+    req.body = {
+      ...req.body,
+      userInfoToken: decoded,
+    };
     next();
-  } catch {
+  } catch (error) {
+    console.log(error);
     next({ status: StatusCodes.UNAUTHORIZED, message: 'Expired or invalid token' });
   }
 };

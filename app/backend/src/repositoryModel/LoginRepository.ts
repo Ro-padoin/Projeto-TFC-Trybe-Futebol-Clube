@@ -6,7 +6,12 @@ class LoginRepository implements ILoginRepository {
   }
 
   async login(email: string): Promise<UsersModel | null> {
-    const dataValues = await this.model.findOne({ where: { email } });
+    const user = await this.model.findOne({ where: { email } });
+    return user?.get({ plain: true });
+  }
+
+  async loginById(id: number): Promise<UsersModel | null> {
+    const dataValues = await this.model.findByPk(id);
     return dataValues as UsersModel;
   }
 }
