@@ -75,8 +75,9 @@ const validateAuth = (req: Request, res: Response, next: NextFunction) => {
       userInfoToken: data,
     };
     next();
-  } catch (error: Error | any) {
-    next({ status: StatusCodes.UNAUTHORIZED, message: error.message });
+  } catch (error) {
+    console.log(error);
+    next({ status: StatusCodes.UNAUTHORIZED, message: 'Invalid or expired token' });
   }
 };
 
