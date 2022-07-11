@@ -11,7 +11,7 @@ class TeamsService implements ITeams {
     const teams = await this.model.getAllTeams();
 
     if (!teams) {
-      throw new ErrorMiddleware(401, 'Teams not found');
+      throw new ErrorMiddleware(404, 'Teams not found');
     }
     return teams as unknown as TeamsModels;
   }

@@ -9,11 +9,11 @@ class LoginRepository implements ILoginRepository {
     const data = await this.model.findOne({ where: { email } });
 
     const user = {
-      id: data?.getDataValue('id'),
-      username: data?.getDataValue('username'),
-      email: data?.getDataValue('email'),
-      role: data?.getDataValue('role'),
-      password: data?.getDataValue('password'),
+      id: data?.id,
+      username: data?.username,
+      email: data?.email,
+      role: data?.role,
+      password: data?.password,
     };
 
     return user as UsersModel;

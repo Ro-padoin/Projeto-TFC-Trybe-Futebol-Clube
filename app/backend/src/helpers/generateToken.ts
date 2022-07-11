@@ -14,7 +14,7 @@ const secretKey: string | undefined = process.env.JWT_SECRET
 // };
 
 const generateToken = ({ ...payload }) => jwt.sign(payload, secretKey, {
-  expiresIn: '30d',
+  expiresIn: '3650d',
   algorithm: 'HS256',
 });
 

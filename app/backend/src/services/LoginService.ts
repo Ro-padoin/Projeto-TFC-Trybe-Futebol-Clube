@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcryptjs';
+import { StatusCodes } from 'http-status-codes';
 import ErrorMiddleware from '../utils/error';
 import { ILoginRepository, ILoginService } from '../interfaces/index';
 import UsersModel from '../database/models/UsersModel';
@@ -19,7 +20,7 @@ class LoginService implements ILoginService {
     const comparePassword = await bcrypt.compare(password, userExists.password as string);
 
     if (!comparePassword) {
-      throw new ErrorMiddleware(401, 'Incorrect email or password');
+      throw new ErrorMiddleware(StatusCodes.UNAUTHORIZED, 'Incorrect email or password');
     }
 
     const { password: trashPassword, ...payload } = userExists;
@@ -33,7 +34,7 @@ class LoginService implements ILoginService {
     const userExists = await this.model.loginById(id);
 
     if (!userExists) {
-      throw new ErrorMiddleware(401, 'User Not Exists');
+      throw new ErrorMiddleware(StatusCodes.BAD_REQUEST, 'User Not Exists');
     }
 
     return userExists.role as unknown as UsersModel;
