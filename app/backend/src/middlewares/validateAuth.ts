@@ -69,15 +69,14 @@ const validateAuth = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decoded = jwt.verify(token, secretKey) as TokenPayload;
+    const data = jwt.verify(token, secretKey) as TokenPayload;
     req.body = {
       ...req.body,
-      userInfoToken: decoded,
+      userInfoToken: data,
     };
     next();
-  } catch (error) {
-    console.log(error);
-    next({ status: StatusCodes.UNAUTHORIZED, message: 'Expired or invalid token' });
+  } catch (error: Error | any) {
+    next({ status: StatusCodes.UNAUTHORIZED, message: error.message });
   }
 };
 

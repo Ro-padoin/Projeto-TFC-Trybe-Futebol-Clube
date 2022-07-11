@@ -136,8 +136,7 @@ describe('Teste a rota de login', () => {
            .request(app).post('/login').send({
             "email": "user@user.com",
             "password": "secret_user"
-          });          
- 
+          });
     expect(chaiHttpResponse.status).to.be.eql(StatusCodes.OK);
     expect(chaiHttpResponse.body).to.have.a.key('token');
   });
