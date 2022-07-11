@@ -5,8 +5,7 @@
 
 // dotenv.config();
 
-// const secretKey = process.env.JWT_SECRET
-//   || 'un-Y&RyAHU-G_jN4Dzp%ydTJLdMzr8MwZSjG';
+// const secretKey = process.env.JWT_SECRET || 'un-Y&RyAHU-G_jN4Dzp%ydTJLdMzr8MwZSjG';
 
 // type TokenPayload = {
 //   id: number;
@@ -15,28 +14,19 @@
 //   email: string;
 // };
 
-// const callNextIfInvalid = (token: string, next: NextFunction): void => {
-//   if (!token || !secretKey) {
-//     next({ status: StatusCodes.UNAUTHORIZED, message: 'Token not found' });
-//   }
-// };
-
-// const validateAuth = (
-//   req: Request & { userInfo?: TokenPayload },
-//   res: Response,
-//   next: NextFunction,
-// ) => {
+// const validateAuth = (req: Request, res: Response, next: NextFunction) => {
 //   const token: string = req.headers.authorization as string;
 
-//   callNextIfInvalid(token, next);
+//   if (!token || !secretKey) {
+//     return res
+//       .status(StatusCodes.UNAUTHORIZED).json({ message: 'Token not found' });
+//   }
 
-//   jwt.verify(token, secretKey, (error: jwt.VerifyErrors | null, decoded: jwt.Jwt | undefined) => {
+//   jwt.verify(token, secretKey, (error, data) => {
 //     if (!error) {
-//       next({ status:
-//         StatusCodes.UNAUTHORIZED,
-//       message: 'Expired or invalid token' });
+//       next({ status: StatusCodes.UNAUTHORIZED, message: 'Expired or invalid token' });
 //     }
-//     req.user = decoded;
+//     req.body = { ...req.body, userInfoToken: data };
 //   });
 //   next();
 // };
@@ -76,7 +66,6 @@ const validateAuth = (req: Request, res: Response, next: NextFunction) => {
     };
     next();
   } catch (error) {
-    console.log(error);
     next({ status: StatusCodes.UNAUTHORIZED, message: 'Invalid or expired token' });
   }
 };
