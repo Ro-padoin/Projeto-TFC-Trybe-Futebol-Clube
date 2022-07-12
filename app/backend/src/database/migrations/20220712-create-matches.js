@@ -38,7 +38,6 @@ module.exports = {
       in_progress: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        defaultValue: '0'
       },
     })
   },

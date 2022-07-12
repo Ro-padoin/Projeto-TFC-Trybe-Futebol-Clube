@@ -18,8 +18,8 @@ class MatchesController {
 
   async createNewMatch(req: Request, res: Response, next: NextFunction) {
     try {
-      const newMatche = await this.service.createNewMatch(req.body);
-      return res.status(StatusCodes.CREATED).json(newMatche);
+      const newMatch = await this.service.createNewMatch(req.body);
+      return res.status(StatusCodes.CREATED).json(newMatch);
     } catch (error) {
       next(error);
     }
@@ -29,7 +29,7 @@ class MatchesController {
     try {
       const { id } = req.params;
       const finished = await this.service.updateMatch(Number(id));
-      return res.status(StatusCodes.CREATED).json(finished);
+      return res.status(StatusCodes.OK).json(finished);
     } catch (error) {
       next(error);
     }

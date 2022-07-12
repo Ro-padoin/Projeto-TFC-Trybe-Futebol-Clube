@@ -1,11 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import MatchesModel from '../database/models/MatchesModels';
-import TeamsModels from '../repositoryModel/TeamsRepository';
 import { IMatch, IMatches } from '../interfaces';
+import TeamsModels from '../repositoryModel/TeamsRepository';
 import ErrorMiddleware from '../utils/error';
 
 class MatchesService implements IMatches {
   private team: TeamsModels;
+
   constructor(private model: IMatches) {
     this.model = model;
     this.team = new TeamsModels();
@@ -41,11 +42,16 @@ class MatchesService implements IMatches {
     return newMatch as unknown as MatchesModel;
   }
 
+  async getMatchById(id: number): Promise<MatchesModel | null> {
+    const matchById = await this.model.getMatchById(id);
+    return matchById;
+  }
+
   async updateMatch(id: number): Promise<void | null> {
-    const matchById = await this.team.getTeamById(id);
+    const matchById = await this.getMatchById(id);
 
     if (!matchById) {
-      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Teams not found.');
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Match not found.');
     }
 
     const finished = await this.model.updateMatch(id);

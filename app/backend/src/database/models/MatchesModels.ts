@@ -36,7 +36,7 @@ MatchesModel.init({
   },
   inProgress: {
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.BOOLEAN,
   },
 }, {
   modelName: 'matches',
