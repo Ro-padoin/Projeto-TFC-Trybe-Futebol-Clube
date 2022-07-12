@@ -16,7 +16,7 @@ class MatchesService implements IMatches {
     const matches = await this.model.getAllMatches();
 
     if (!matches) {
-      throw new ErrorMiddleware(404, 'Matches not found');
+      throw new ErrorMiddleware(404, 'Matches not found.');
     }
     return matches as unknown as IMatches;
   }

@@ -29,10 +29,10 @@ export interface IMatch {
 
 export interface IMatches extends Partial<MatchesModel> {
   teamHome?: {
-    teamName: 'São Paulo'
+    teamName: string
   },
   teamAway?: {
-    teamName: 'Grêmio'
+    teamName: string
   }
   getAllMatches(): Promise<IMatches | null>;
   createNewMatch(match: IMatch): Promise<MatchesModel | null>;
