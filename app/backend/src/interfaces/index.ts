@@ -18,10 +18,6 @@ export interface ITeams {
   getTeamById(id: string): Promise<TeamsModels | null>;
 }
 
-// export interface ITeamsRepository extends Partial<TeamsModels> {
-//   getAllTeams(): Promise<UsersModel | null>
-// }
-
 export interface ILoginSchema {
   email: string
   password: string
