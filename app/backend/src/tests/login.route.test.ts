@@ -29,7 +29,7 @@ const MESSAGE_FIELDS_FILLED = 'All fields must be filled';
 const UNAUTHORIZED = 'Incorrect email or password';
 const TOKEN_NOT_FOUND = 'Token not found';
 const USER_NOT_EXISTS = 'User not Exists';
-const INVALID_TOKEN = 'Invalid or expired token';
+const INVALID_TOKEN = 'Token must be a valid token';
 
 
 describe('Teste a rota de login', () => {
@@ -168,7 +168,7 @@ describe('Teste a rota de login/validate', () => {
        expect(chaiHttpResponse.body.message).to.be.equal(TOKEN_NOT_FOUND);
   });
 
-  it('Teste se ao logar com um token inválido retorna status 401 com a mensagem Invalid or expired token', async () => {
+  it('Teste se ao logar com um token inválido retorna status 401 com a mensagem Token must be a valid token', async () => {
 
     chaiHttpResponse = await chai
        .request(app).get('/login/validate').set('Authorization', 'token');

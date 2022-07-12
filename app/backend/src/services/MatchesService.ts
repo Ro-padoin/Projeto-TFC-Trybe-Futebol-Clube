@@ -23,18 +23,19 @@ class MatchesService implements IMatches {
 
   async createNewMatch(match: IMatch): Promise<MatchesModel | null> {
     const { homeTeam, awayTeam } = match;
+
+    if (homeTeam === awayTeam) {
+      throw new ErrorMiddleware(
+        StatusCodes.UNAUTHORIZED,
+        'It is not possible to create a match with two equal teams',
+      );
+    }
+
     const homeTeamExists = await this.team.getTeamById(homeTeam);
     const awayTeamExists = await this.team.getTeamById(awayTeam);
 
     if (!homeTeamExists || !awayTeamExists) {
-      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Teams not found.');
-    }
-
-    if (homeTeam === awayTeam) {
-      throw new ErrorMiddleware(
-        StatusCodes.BAD_REQUEST,
-        'Home team and away team cannot be equal.',
-      );
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'There is no team with such id!');
     }
 
     const newMatch = await this.model.createNewMatch({ ...match, inProgress: true });

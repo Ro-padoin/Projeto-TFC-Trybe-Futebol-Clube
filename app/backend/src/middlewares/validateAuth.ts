@@ -66,7 +66,7 @@ const validateAuth = (req: Request, res: Response, next: NextFunction) => {
     };
     next();
   } catch (error) {
-    next({ status: StatusCodes.UNAUTHORIZED, message: 'Invalid or expired token' });
+    next({ status: StatusCodes.UNAUTHORIZED, message: 'Token must be a valid token' });
   }
 };
 

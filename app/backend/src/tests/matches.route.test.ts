@@ -16,7 +16,7 @@ const { expect } = chai;
 let chaiHttpResponse: Response;
 
 const MATCHES_NOT_FOUND = 'Matches not found.';
-const INVALID_TOKEN = 'Invalid or expired token';
+const INVALID_TOKEN = 'Token must be a valid token';
 
 describe('Teste a rota get /matches com dados no banco de dados', () => {
 
@@ -115,7 +115,7 @@ const MATCHES_MOCK = {
       expect(chaiHttpResponse.body).to.be.eql(MATCHES_MOCK);      
   });
 
-  it('Teste se com token inválido, a rota de criação  retorna status 401 e mensagem de Token Invalido', async () => {
+  it('Teste se com token inválido, a rota de criação  retorna status 401 e mensagem Token must be a valid token', async () => {
 
     chaiHttpResponse = await chai
     .request(app).post('/matches').set('Authorization', 'token').send({
