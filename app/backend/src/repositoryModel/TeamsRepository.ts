@@ -10,6 +10,12 @@ class TeamsRepository implements ITeams {
 
     return teams as unknown as TeamsModels;
   }
+
+  async getTeamById(id: string): Promise<TeamsModels | null> {
+    const team = await this.model.findByPk(Number(id));
+
+    return team as unknown as TeamsModels;
+  }
 }
 
 export default TeamsRepository;

@@ -16,4 +16,8 @@ TeamsRouter.get('/teams', (req, res, next) => {
   entityFactory().getAllTeams(req, res, next);
 });
 
+TeamsRouter.get('/teams/:id', (req, res, next) => {
+  entityFactory().getTeamById(req, res, next);
+});
+
 export default TeamsRouter;

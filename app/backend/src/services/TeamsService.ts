@@ -15,6 +15,15 @@ class TeamsService implements ITeams {
     }
     return teams as unknown as TeamsModels;
   }
+
+  async getTeamById(id: string): Promise<TeamsModels | null> {
+    const team = await this.model.getTeamById(id);
+
+    if (!team) {
+      throw new ErrorMiddleware(404, 'Team not found');
+    }
+    return team as unknown as TeamsModels;
+  }
 }
 
 export default TeamsService;

@@ -15,6 +15,7 @@ export interface ILoginService {
 
 export interface ITeams {
   getAllTeams(): Promise<TeamsModels | null>;
+  getTeamById(id: string): Promise<TeamsModels | null>;
 }
 
 // export interface ITeamsRepository extends Partial<TeamsModels> {
