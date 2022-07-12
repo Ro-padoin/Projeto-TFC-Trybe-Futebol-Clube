@@ -16,11 +16,26 @@ export interface ILoginService {
 
 export interface ITeams {
   getAllTeams(): Promise<TeamsModels | null>;
-  getTeamById(id: string): Promise<TeamsModels | null>;
+  getTeamById(id: number): Promise<TeamsModels | null>;
 }
 
-export interface IMatches {
-  getAllMatches(): Promise<MatchesModel | null>;
+export interface IMatch {
+  homeTeam: number;
+  awayTeam: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+  inProgress?: boolean;
+}
+
+export interface IMatches extends Partial<MatchesModel> {
+  teamHome?: {
+    teamName: 'São Paulo'
+  },
+  teamAway?: {
+    teamName: 'Grêmio'
+  }
+  getAllMatches(): Promise<IMatches | null>;
+  createNewMatch(match: IMatch): Promise<MatchesModel | null>;
 }
 
 export interface ILoginSchema {

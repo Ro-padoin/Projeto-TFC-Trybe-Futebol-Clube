@@ -19,7 +19,7 @@ class TeamsController {
   async getTeamById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const team = await this.service.getTeamById(id);
+      const team = await this.service.getTeamById(Number(id));
       return res.status(StatusCodes.OK).json(team);
     } catch (error) {
       next(error);

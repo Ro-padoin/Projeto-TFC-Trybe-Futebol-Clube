@@ -1,12 +1,12 @@
 import TeamsModels from '../database/models/TeamsModels';
 import MatchesModel from '../database/models/MatchesModels';
-import { IMatches } from '../interfaces';
+import { IMatch, IMatches } from '../interfaces';
 
 class MatchesRepository implements IMatches {
   constructor(private model = MatchesModel) {
   }
 
-  async getAllMatches(): Promise<MatchesModel | null> {
+  async getAllMatches(): Promise<IMatches | null> {
     const matches = await this.model.findAll({
       include: [
         { model: TeamsModels, as: 'teamHome', attributes: { exclude: ['id'] } },
@@ -14,9 +14,13 @@ class MatchesRepository implements IMatches {
       ],
     });
 
-    console.log(matches);
+    return matches as unknown as IMatches;
+  }
 
-    return matches as unknown as MatchesModel;
+  async createNewMatch(match: IMatch): Promise<MatchesModel | null> {
+    const newMatch = await this.model.create(match);
+
+    return newMatch as unknown as MatchesModel;
   }
 }
 

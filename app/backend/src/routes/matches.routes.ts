@@ -2,6 +2,7 @@ import { Router } from 'express';
 import Repository from '../repositoryModel/MatchesRepository';
 import Service from '../services/MatchesService';
 import Controller from '../controllers/MatchesController';
+import validateAuth from '../middlewares/validateAuth';
 
 const entityFactory = () => {
   const repository = new Repository();
@@ -14,6 +15,10 @@ const MatchesRouter: Router = Router();
 
 MatchesRouter.get('/matches', (req, res, next) => {
   entityFactory().getAllMatches(req, res, next);
+});
+
+MatchesRouter.post('/matches', validateAuth, (req, res, next) => {
+  entityFactory().createNewMatch(req, res, next);
 });
 
 export default MatchesRouter;
