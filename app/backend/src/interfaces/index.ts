@@ -1,3 +1,4 @@
+import MatchesModel from '../database/models/MatchesModels';
 import TeamsModels from '../database/models/TeamsModels';
 import UsersModel from '../database/models/UsersModel';
 
@@ -16,6 +17,10 @@ export interface ILoginService {
 export interface ITeams {
   getAllTeams(): Promise<TeamsModels | null>;
   getTeamById(id: string): Promise<TeamsModels | null>;
+}
+
+export interface IMatches {
+  getAllMatches(): Promise<MatchesModel | null>;
 }
 
 export interface ILoginSchema {
