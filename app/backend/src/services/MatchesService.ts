@@ -40,6 +40,17 @@ class MatchesService implements IMatches {
 
     return newMatch as unknown as MatchesModel;
   }
+
+  async updateMatch(id: number): Promise<void | null> {
+    const matchById = await this.team.getTeamById(id);
+
+    if (!matchById) {
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Teams not found.');
+    }
+
+    const finished = await this.model.updateMatch(id);
+    return finished;
+  }
 }
 
 export default MatchesService;

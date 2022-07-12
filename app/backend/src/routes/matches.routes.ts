@@ -21,4 +21,8 @@ MatchesRouter.post('/matches', validateAuth, (req, res, next) => {
   entityFactory().createNewMatch(req, res, next);
 });
 
+MatchesRouter.patch('/matches/:id/finish', (req, res, next) => {
+  entityFactory().updateMatch(req, res, next);
+});
+
 export default MatchesRouter;
