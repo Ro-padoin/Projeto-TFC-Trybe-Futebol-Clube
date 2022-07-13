@@ -25,10 +25,23 @@ class MatchesController {
     }
   }
 
-  async updateMatch(req: Request, res: Response, next: NextFunction) {
+  async updateMatchToFinished(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const finished = await this.service.updateMatch(Number(id));
+      const finished = await this.service.updateMatchToFinished(Number(id));
+      return res.status(StatusCodes.OK).json(finished);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateGamesInProgress(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { userInfoToken, ...newBody } = req.body;
+      const body = Object.keys(newBody).length > 0 ? newBody : { inProgress: false };
+      console.log(body);
+      const finished = await this.service.updateGamesInProgress(Number(id), body);
       return res.status(StatusCodes.OK).json(finished);
     } catch (error) {
       next(error);

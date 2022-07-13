@@ -48,14 +48,26 @@ class MatchesService implements IMatches {
     return matchById;
   }
 
-  async updateMatch(id: number): Promise<void | null> {
+  async updateMatchToFinished(id: number): Promise<void | null> {
     const matchById = await this.getMatchById(id);
 
     if (!matchById) {
       throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Match not found.');
     }
 
-    const finished = await this.model.updateMatch(id);
+    const finished = await this.model.updateMatchToFinished(id);
+    return finished;
+  }
+
+  async updateGamesInProgress(id: number, body: IMatch): Promise<void | null> {
+    const matchById = await this.getMatchById(id);
+
+    if (!matchById) {
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Match not found.');
+    }
+
+    const finished = await this.model.updateGamesInProgress(id, body);
+    console.log({ finished });
     return finished;
   }
 }

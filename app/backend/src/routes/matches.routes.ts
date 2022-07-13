@@ -21,8 +21,12 @@ MatchesRouter.post('/matches', validateAuth, (req, res, next) => {
   entityFactory().createNewMatch(req, res, next);
 });
 
-MatchesRouter.patch('/matches/:id/finish', (req, res, next) => {
-  entityFactory().updateMatch(req, res, next);
+MatchesRouter.patch('/matches/:id/finish', validateAuth, (req, res, next) => {
+  entityFactory().updateGamesInProgress(req, res, next);
+});
+
+MatchesRouter.patch('/matches/:id', validateAuth, (req, res, next) => {
+  entityFactory().updateGamesInProgress(req, res, next);
 });
 
 export default MatchesRouter;

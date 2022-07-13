@@ -37,7 +37,8 @@ export interface IMatches extends Partial<MatchesModel> {
   getAllMatches(): Promise<IMatches | null>;
   createNewMatch(match: IMatch): Promise<MatchesModel | null>;
   getMatchById(id: number): Promise<MatchesModel | null>;
-  updateMatch(id: number): Promise<void | null>;
+  updateMatchToFinished(id: number): Promise<void | null>;
+  updateGamesInProgress(id: number, data: Partial<IMatch>): Promise<void | null>;
 }
 
 export interface ILoginSchema {

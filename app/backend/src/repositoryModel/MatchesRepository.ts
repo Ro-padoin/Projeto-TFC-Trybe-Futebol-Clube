@@ -28,10 +28,15 @@ class MatchesRepository implements IMatches {
     return matchById as MatchesModel;
   }
 
-  async updateMatch(id: number): Promise<void | null> {
+  async updateMatchToFinished(id: number): Promise<void | null> {
     await this.model.update({ inProgress: false }, { where: { id } });
 
     return { message: 'Finished' } as unknown as void | null;
+  }
+
+  async updateGamesInProgress(id: number, body: IMatch): Promise<void | null> {
+    await this.model.update(body, { where: { id } });
+    return { message: 'Finished' } as unknown as void;
   }
 }
 
