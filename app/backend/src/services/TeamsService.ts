@@ -7,13 +7,13 @@ class TeamsService implements ITeams {
     this.model = model;
   }
 
-  async getAllTeams(): Promise<TeamsModels | null> {
+  async getAllTeams(): Promise<TeamsModels[]> {
     const teams = await this.model.getAllTeams();
 
     if (!teams) {
       throw new ErrorMiddleware(404, 'Teams not found');
     }
-    return teams as unknown as TeamsModels;
+    return teams as unknown as TeamsModels[];
   }
 
   async getTeamById(id: number): Promise<TeamsModels | null> {

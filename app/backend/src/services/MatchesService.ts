@@ -43,6 +43,11 @@ class MatchesService implements IMatches {
     return newMatch as unknown as MatchesModel;
   }
 
+  async getMatchHomeTeam(id: number): Promise<IMatch[]> {
+    const matchesById = await this.model.getMatchHomeTeam(id);
+    return matchesById as unknown as IMatch[];
+  }
+
   async getMatchById(id: number): Promise<MatchesModel | null> {
     const matchById = await this.model.getMatchById(id);
     return matchById;
