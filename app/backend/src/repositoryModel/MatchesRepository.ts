@@ -6,15 +6,16 @@ class MatchesRepository implements IMatches {
   constructor(private model = MatchesModel) {
   }
 
-  async getAllMatches(): Promise<IMatches | null> {
+  async getAllMatches(payload: object | null): Promise<IMatch[]> {
     const matches = await this.model.findAll({
+      ...payload,
       include: [
         { model: TeamsModels, as: 'teamHome', attributes: { exclude: ['id'] } },
         { model: TeamsModels, as: 'teamAway', attributes: { exclude: ['id'] } },
       ],
     });
 
-    return matches as unknown as IMatches;
+    return matches as unknown as IMatch[];
   }
 
   async createNewMatch(match: IMatch): Promise<MatchesModel | null> {

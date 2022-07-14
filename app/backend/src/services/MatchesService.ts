@@ -12,13 +12,13 @@ class MatchesService implements IMatches {
     this.team = new TeamsModels();
   }
 
-  async getAllMatches(): Promise<IMatches | null> {
-    const matches = await this.model.getAllMatches();
+  async getAllMatches(payload: object | null): Promise<IMatch[]> {
+    const matches = await this.model.getAllMatches(payload);
 
     if (!matches) {
       throw new ErrorMiddleware(404, 'Matches not found.');
     }
-    return matches as unknown as IMatches;
+    return matches as unknown as IMatch[];
   }
 
   async createNewMatch(match: IMatch): Promise<MatchesModel | null> {

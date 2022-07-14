@@ -41,9 +41,9 @@ export interface IMatches extends Partial<MatchesModel> {
   teamAway?: {
     teamName: string
   }
-  getAllMatches(): Promise<IMatches | null>;
+  getAllMatches(payload: object | null): Promise<IMatch[]>;
   createNewMatch(match: IMatch): Promise<IMatch | null>;
-  getMatchHomeTeam(id: number, matchAttribute: string): Promise<IMatch[]>;
+  getMatchHomeTeam(id: number, matchAttribute: string | number | null): Promise<IMatch[]>;
   getMatchById(id: number): Promise<MatchesModel | null>;
   updateMatchToFinished(id: number): Promise<void | null>;
   updateGamesInProgress(id: number, data: Partial<IMatch>): Promise<void | null>;
@@ -62,7 +62,8 @@ export interface ILeaderBoard {
 }
 
 export interface ILeaderBoards extends Partial<ILeaderBoard> {
-  createLeaderBoard(matchAttribute: string): Promise<ILeaderBoard | null>
+  createLeaderBoard(matchAttribute: string | number): Promise<ILeaderBoard | null>
+  createLeaderBoardGeneral(): Promise<ILeaderBoard | null>
 }
 
 export interface ILoginSchema {

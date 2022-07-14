@@ -1,38 +1,3 @@
-// import { Request, Response, NextFunction } from 'express';
-// import * as jwt from 'jsonwebtoken';
-// import * as dotenv from 'dotenv';
-// import { StatusCodes } from 'http-status-codes';
-
-// dotenv.config();
-
-// const secretKey = process.env.JWT_SECRET || 'un-Y&RyAHU-G_jN4Dzp%ydTJLdMzr8MwZSjG';
-
-// type TokenPayload = {
-//   id: number;
-//   username: string;
-//   role: string;
-//   email: string;
-// };
-
-// const validateAuth = (req: Request, res: Response, next: NextFunction) => {
-//   const token: string = req.headers.authorization as string;
-
-//   if (!token || !secretKey) {
-//     return res
-//       .status(StatusCodes.UNAUTHORIZED).json({ message: 'Token not found' });
-//   }
-
-//   jwt.verify(token, secretKey, (error, data) => {
-//     if (!error) {
-//       next({ status: StatusCodes.UNAUTHORIZED, message: 'Expired or invalid token' });
-//     }
-//     req.body = { ...req.body, userInfoToken: data };
-//   });
-//   next();
-// };
-
-// export default validateAuth;
-
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';

@@ -20,4 +20,8 @@ LeaderBoardRouter.get('/leaderboard/away', (req, res, next) => {
   entityFactory().createLeaderBoard(req, res, next);
 });
 
+LeaderBoardRouter.get('/leaderboard', (req, res, next) => {
+  entityFactory().createLeaderBoardGeneral(req, res, next);
+});
+
 export default LeaderBoardRouter;

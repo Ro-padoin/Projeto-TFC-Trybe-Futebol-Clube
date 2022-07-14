@@ -1,0 +1,110 @@
+import { Op } from 'sequelize';
+import { IBoardGeneral, ILeaderBoard, IMatch, IMatches, ITeam } from '../interfaces';
+import TeamsModels from '../repositoryModel/TeamsRepository';
+// import ErrorMiddleware from '../utils/error';
+
+class BoardGeneralService implements IBoardGeneral {
+  private teamModel: TeamsModels;
+
+  constructor(private model: IMatches) {
+    this.model = model;
+    this.teamModel = new TeamsModels();
+  }
+
+  static createTotalVictories(matches: IMatch[], id: number): number {
+    return matches.reduce((acc: number, match: IMatch) => {
+      if (match.homeTeam === id && match.homeTeamGoals > match.awayTeamGoals) return acc + 1;
+      if (match.awayTeam === id && match.awayTeamGoals > match.homeTeamGoals) return acc + 1;
+      return acc;
+    }, 0);
+  }
+
+  static createTotalDraws(matches: IMatch[], id: number): number {
+    return matches.reduce((acc: number, match: IMatch) => {
+      if (match.homeTeam === id && match.homeTeamGoals === match.awayTeamGoals) return acc + 1;
+      if (match.awayTeam === id && match.awayTeamGoals === match.homeTeamGoals) return acc + 1;
+      return acc;
+    }, 0);
+  }
+
+  static createTotalLosses(matches: IMatch[], id: number): number {
+    return matches.reduce((acc: number, match: IMatch) => {
+      if (match.homeTeam === id && match.homeTeamGoals < match.awayTeamGoals) return acc + 1;
+      if (match.awayTeam === id && match.awayTeamGoals < match.homeTeamGoals) return acc + 1;
+      return acc;
+    }, 0);
+  }
+
+  static createGoalsFavor(matches: IMatch[], id: number): number {
+    return matches.reduce((acc: number, match: IMatch) => {
+      if (match.homeTeam === id) return acc + match.homeTeamGoals;
+      if (match.awayTeam === id) return acc + match.awayTeamGoals;
+      return acc;
+    }, 0);
+  }
+
+  static createGoalsOwn(matches: IMatch[], id: number): number {
+    return matches.reduce((acc: number, match: IMatch) => {
+      if (match.homeTeam === id) return acc + acc + match.awayTeamGoals;
+      if (match.awayTeam === id) return acc + match.homeTeamGoals;
+      return acc;
+    }, 0);
+  }
+
+  static createOrdenatedLeaderBoard(board: ILeaderBoard[]): ILeaderBoard[] {
+    return board.sort((teamA: ILeaderBoard, teamB: ILeaderBoard) => {
+      if (teamA.totalPoints === teamB.totalPoints) {
+        return teamB.totalVictories - teamA.totalVictories
+        || teamB.goalsBalance - teamA.goalsBalance
+        || teamB.goalsFavor - teamA.goalsFavor
+        || teamB.goalsOwn - teamA.goalsOwn;
+      }
+      return teamB.totalPoints - teamA.totalPoints;
+    });
+  }
+
+  static createBoard(matches: IMatch[], id: number):Partial<ILeaderBoard> {
+    const totalGames = matches.length;
+    const totalVictories = this.createTotalVictories(matches, id);
+    const totalDraws = this.createTotalDraws(matches, id);
+    const totalLosses = this.createTotalLosses(matches, id);
+    const goalsFavor = this.createGoalsFavor(matches, id);
+    const goalsOwn = this.createGoalsOwn(matches, id);
+    const totalPoints = (totalVictories * 3) + totalDraws;
+    const goalsBalance = goalsFavor - goalsOwn;
+    const efficiency = Number((totalPoints / (totalGames * 3)) * 100).toFixed(2);
+
+    return { totalPoints,
+      totalGames,
+      totalVictories,
+      totalDraws,
+      totalLosses,
+      goalsFavor,
+      goalsOwn,
+      goalsBalance,
+      efficiency };
+  }
+
+  async createLeaderBoardGeneral(): Promise<ILeaderBoard | null> {
+    const teams = await this.teamModel.getAllTeams();
+
+    const leaderBoard = await Promise.all(teams?.map(async (team: ITeam) => {
+      const matchesById = await this.model.getAllMatches({ where: {
+        [Op.or]: [{ homeTeam: Number(team.id) }, { awayTeam: Number(team.id) }],
+        inProgress: false,
+      },
+      });
+      const createBoard = BoardGeneralService.createBoard(matchesById, team.id);
+      return {
+        name: team.teamName,
+        ...createBoard,
+      };
+    }));
+
+    BoardGeneralService.createOrdenatedLeaderBoard(leaderBoard as unknown as ILeaderBoard[]);
+
+    return leaderBoard as unknown as ILeaderBoard;
+  }
+}
+
+export default BoardGeneralService;
