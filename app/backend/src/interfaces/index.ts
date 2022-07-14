@@ -14,6 +14,11 @@ export interface ILoginService {
   loginValidate(id: number): Promise<UsersModel | null>;
 }
 
+export interface ITeam {
+  id: number,
+  teamName: string,
+}
+
 export interface ITeams {
   getAllTeams(): Promise<TeamsModels[]>;
   getTeamById(id: number): Promise<TeamsModels | null>;
@@ -29,11 +34,6 @@ export interface IMatch {
   length?: number;
 }
 
-export interface ITeam {
-  id: number,
-  teamName: string,
-}
-
 export interface IMatches extends Partial<MatchesModel> {
   teamHome?: {
     teamName: string
@@ -43,10 +43,9 @@ export interface IMatches extends Partial<MatchesModel> {
   }
   getAllMatches(payload: object | null): Promise<IMatch[]>;
   createNewMatch(match: IMatch): Promise<IMatch | null>;
-  getMatchHomeTeam(id: number, matchAttribute: string | number | null): Promise<IMatch[]>;
+  getMatchesByTeam(id: number, matchAttribute: string | number | null): Promise<IMatch[]>;
   getMatchById(id: number): Promise<MatchesModel | null>;
-  updateMatchToFinished(id: number): Promise<void | null>;
-  updateGamesInProgress(id: number, data: Partial<IMatch>): Promise<void | null>;
+  updateMatch(id: number, data: Partial<IMatch>): Promise<void | null>;
 }
 
 export interface ILeaderBoard {
@@ -70,8 +69,3 @@ export interface ILoginSchema {
   email: string
   password: string
 }
-
-// export interface IMatchAttribute {
-//   homeTeam: string
-//   awayTeam: string
-// }

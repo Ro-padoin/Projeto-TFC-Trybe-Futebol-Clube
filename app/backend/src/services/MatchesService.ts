@@ -16,7 +16,7 @@ class MatchesService implements IMatches {
     const matches = await this.model.getAllMatches(payload);
 
     if (!matches) {
-      throw new ErrorMiddleware(404, 'Matches not found.');
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Matches not found.');
     }
     return matches as unknown as IMatch[];
   }
@@ -43,8 +43,8 @@ class MatchesService implements IMatches {
     return newMatch as unknown as MatchesModel;
   }
 
-  async getMatchHomeTeam(id: number, matchAttribute: string): Promise<IMatch[]> {
-    const matchesById = await this.model.getMatchHomeTeam(id, matchAttribute);
+  async getMatchesByTeam(id: number, matchAttribute: string): Promise<IMatch[]> {
+    const matchesById = await this.model.getMatchesByTeam(id, matchAttribute);
     return matchesById as unknown as IMatch[];
   }
 
@@ -53,25 +53,12 @@ class MatchesService implements IMatches {
     return matchById;
   }
 
-  async updateMatchToFinished(id: number): Promise<void | null> {
+  async updateMatch(id: number, body: IMatch): Promise<void | null> {
     const matchById = await this.getMatchById(id);
-
     if (!matchById) {
       throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Match not found.');
     }
-
-    const finished = await this.model.updateMatchToFinished(id);
-    return finished;
-  }
-
-  async updateGamesInProgress(id: number, body: IMatch): Promise<void | null> {
-    const matchById = await this.getMatchById(id);
-
-    if (!matchById) {
-      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Match not found.');
-    }
-
-    const finished = await this.model.updateGamesInProgress(id, body);
+    const finished = await this.model.updateMatch(id, body);
     return finished;
   }
 }

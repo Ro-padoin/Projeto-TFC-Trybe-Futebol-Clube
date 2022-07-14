@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import TeamsModels from '../database/models/TeamsModels';
 import { ITeams } from '../interfaces';
 import ErrorMiddleware from '../utils/error';
@@ -11,7 +12,7 @@ class TeamsService implements ITeams {
     const teams = await this.model.getAllTeams();
 
     if (!teams) {
-      throw new ErrorMiddleware(404, 'Teams not found');
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Teams not found');
     }
     return teams as unknown as TeamsModels[];
   }
@@ -20,7 +21,7 @@ class TeamsService implements ITeams {
     const team = await this.model.getTeamById(id);
 
     if (!team) {
-      throw new ErrorMiddleware(404, 'Team not found');
+      throw new ErrorMiddleware(StatusCodes.NOT_FOUND, 'Team not found');
     }
     return team as unknown as TeamsModels;
   }

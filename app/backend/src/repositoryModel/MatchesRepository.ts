@@ -29,20 +29,14 @@ class MatchesRepository implements IMatches {
     return matchById as MatchesModel;
   }
 
-  async getMatchHomeTeam(id: number, matchAttribute: string): Promise<IMatch[]> {
+  async getMatchesByTeam(id: number, matchAttribute: string): Promise<IMatch[]> {
     const matchesById = await this.model.findAll(
       { where: { [matchAttribute]: id, inProgress: false } },
     );
     return matchesById as unknown as IMatch[];
   }
 
-  async updateMatchToFinished(id: number): Promise<void | null> {
-    await this.model.update({ inProgress: false }, { where: { id } });
-
-    return { message: 'Finished' } as unknown as void | null;
-  }
-
-  async updateGamesInProgress(id: number, body: IMatch): Promise<void | null> {
+  async updateMatch(id: number, body: IMatch): Promise<void | null> {
     await this.model.update(body, { where: { id } });
     return { message: 'Finished' } as unknown as void;
   }

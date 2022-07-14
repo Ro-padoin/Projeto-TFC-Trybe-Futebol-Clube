@@ -9,8 +9,8 @@ class MatchesController {
 
   async getAllMatches(_req: Request, res: Response, next: NextFunction) {
     try {
-      const matches = await this.service.getAllMatches(null);
-      return res.status(StatusCodes.OK).json(matches);
+      const allMatches = await this.service.getAllMatches(null);
+      return res.status(StatusCodes.OK).json(allMatches);
     } catch (error) {
       next(error);
     }
@@ -25,22 +25,12 @@ class MatchesController {
     }
   }
 
-  async updateMatchToFinished(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const finished = await this.service.updateMatchToFinished(Number(id));
-      return res.status(StatusCodes.OK).json(finished);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async updateGamesInProgress(req: Request, res: Response, next: NextFunction) {
+  async updateMatch(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const { userInfoToken, ...newBody } = req.body;
       const body = Object.keys(newBody).length > 0 ? newBody : { inProgress: false };
-      const finished = await this.service.updateGamesInProgress(Number(id), body);
+      const finished = await this.service.updateMatch(Number(id), body);
       return res.status(StatusCodes.OK).json(finished);
     } catch (error) {
       next(error);

@@ -7,7 +7,6 @@ class LoginRepository implements ILoginRepository {
 
   async login(email: string): Promise<UsersModel | null> {
     const data = await this.model.findOne({ where: { email } });
-
     const user = {
       id: data?.id,
       username: data?.username,
@@ -15,7 +14,6 @@ class LoginRepository implements ILoginRepository {
       role: data?.role,
       password: data?.password,
     };
-
     return user as UsersModel;
   }
 

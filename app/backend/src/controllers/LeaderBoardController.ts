@@ -1,21 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import LeaderBoardService from '../services/LeaderBoardService';
 import { ILeaderBoards } from '../interfaces';
 
 class LeaderBoardController {
-  private serviceLeader: LeaderBoardService;
-
   constructor(private service: ILeaderBoards) {
     this.service = service;
   }
-
-  // static verifyUrl(originaUrl: string): IMatchAttribute {
-  //   const matchAttribute = originaUrl === '/leaderboard/home'
-  //     ? { homeTeam: 'homeTeam', awayTeam: 'awayTeam' }
-  //     : { homeTeam: 'awayTeam', awayTeam: 'homeTeam' };
-  //   return matchAttribute;
-  // }
 
   async createLeaderBoard(req: Request, res: Response, next: NextFunction) {
     try {

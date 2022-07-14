@@ -9,8 +9,8 @@ class TeamsController {
 
   async getAllTeams(req: Request, res: Response, next: NextFunction) {
     try {
-      const teams = await this.service.getAllTeams();
-      return res.status(StatusCodes.OK).json(teams);
+      const allTeams = await this.service.getAllTeams();
+      return res.status(StatusCodes.OK).json(allTeams);
     } catch (error) {
       next(error);
     }
@@ -19,8 +19,8 @@ class TeamsController {
   async getTeamById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const team = await this.service.getTeamById(Number(id));
-      return res.status(StatusCodes.OK).json(team);
+      const teamById = await this.service.getTeamById(Number(id));
+      return res.status(StatusCodes.OK).json(teamById);
     } catch (error) {
       next(error);
     }

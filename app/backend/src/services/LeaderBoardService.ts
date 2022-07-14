@@ -1,7 +1,6 @@
 import { Op } from 'sequelize';
 import { ILeaderBoard, ILeaderBoards, IMatch, IMatches, ITeam } from '../interfaces';
 import TeamsModels from '../repositoryModel/TeamsRepository';
-// import ErrorMiddleware from '../utils/error';
 
 class LeaderBoardService implements ILeaderBoards {
   private teamModel: TeamsModels;
@@ -99,7 +98,7 @@ class LeaderBoardService implements ILeaderBoards {
     const teams = await this.teamModel.getAllTeams();
 
     const leaderBoard = await Promise.all(teams?.map(async (team: ITeam) => {
-      const matchesById = await this.model.getMatchHomeTeam(Number(team.id), matchAttribute);
+      const matchesById = await this.model.getMatchesByTeam(Number(team.id), matchAttribute);
       const createBoard = LeaderBoardService.createBoard(matchesById, matchAttribute);
       return {
         name: team.teamName,
