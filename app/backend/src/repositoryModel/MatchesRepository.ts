@@ -28,8 +28,10 @@ class MatchesRepository implements IMatches {
     return matchById as MatchesModel;
   }
 
-  async getMatchHomeTeam(id: number): Promise<IMatch[]> {
-    const matchesById = await this.model.findAll({ where: { homeTeam: id, inProgress: false } });
+  async getMatchHomeTeam(id: number, matchAttribute: string): Promise<IMatch[]> {
+    const matchesById = await this.model.findAll(
+      { where: { [matchAttribute]: id, inProgress: false } },
+    );
     return matchesById as unknown as IMatch[];
   }
 

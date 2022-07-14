@@ -1,6 +1,5 @@
 import { ILeaderBoard, ILeaderBoards, IMatch, IMatches, ITeam } from '../interfaces';
 import TeamsModels from '../repositoryModel/TeamsRepository';
-// import ErrorMiddleware from '../utils/error';
 
 class LeaderBoardService implements ILeaderBoards {
   private teamModel: TeamsModels;
@@ -10,33 +9,57 @@ class LeaderBoardService implements ILeaderBoards {
     this.teamModel = new TeamsModels();
   }
 
-  static createTotalVictories(matches: IMatch[]): number {
+  static createTotalVictories(matches: IMatch[], matchAttribute: string): number {
+    if (matchAttribute === 'homeTeam') {
+      return matches.reduce((acc: number, match: IMatch) => {
+        if (match.homeTeamGoals > match.awayTeamGoals) return acc + 1;
+        return acc;
+      }, 0);
+    }
     return matches.reduce((acc: number, match: IMatch) => {
-      if (match.homeTeamGoals > match.awayTeamGoals) return acc + 1;
+      if (match.awayTeamGoals > match.homeTeamGoals) return acc + 1;
       return acc;
     }, 0);
   }
 
-  static createTotalDraws(matches: IMatch[]): number {
+  static createTotalDraws(matches: IMatch[], matchAttribute: string): number {
+    if (matchAttribute === 'homeTeam') {
+      return matches.reduce((acc: number, match: IMatch) => {
+        if (match.homeTeamGoals === match.awayTeamGoals) return acc + 1;
+        return acc;
+      }, 0);
+    }
     return matches.reduce((acc: number, match: IMatch) => {
-      if (match.homeTeamGoals === match.awayTeamGoals) return acc + 1;
+      if (match.awayTeamGoals === match.homeTeamGoals) return acc + 1;
       return acc;
     }, 0);
   }
 
-  static createTotalLosses(matches: IMatch[]): number {
+  static createTotalLosses(matches: IMatch[], matchAttribute: string): number {
+    if (matchAttribute === 'homeTeam') {
+      return matches.reduce((acc: number, match: IMatch) => {
+        if (match.homeTeamGoals < match.awayTeamGoals) return acc + 1;
+        return acc;
+      }, 0);
+    }
     return matches.reduce((acc: number, match: IMatch) => {
-      if (match.homeTeamGoals < match.awayTeamGoals) return acc + 1;
+      if (match.awayTeamGoals < match.homeTeamGoals) return acc + 1;
       return acc;
     }, 0);
   }
 
-  static createGoalsFavor(matches: IMatch[]): number {
-    return matches.reduce((acc: number, match: IMatch) => acc + match.homeTeamGoals, 0);
-  }
-
-  static createGoalsOwn(matches: IMatch[]): number {
+  static createGoalsFavor(matches: IMatch[], matchAttribute: string): number {
+    if (matchAttribute === 'homeTeam') {
+      return matches.reduce((acc: number, match: IMatch) => acc + match.homeTeamGoals, 0);
+    }
     return matches.reduce((acc: number, match: IMatch) => acc + match.awayTeamGoals, 0);
+  }
+
+  static createGoalsOwn(matches: IMatch[], matchAttribute: string): number {
+    if (matchAttribute === 'homeTeam') {
+      return matches.reduce((acc: number, match: IMatch) => acc + match.awayTeamGoals, 0);
+    }
+    return matches.reduce((acc: number, match: IMatch) => acc + match.homeTeamGoals, 0);
   }
 
   static createOrdenatedLeaderBoard(board: ILeaderBoard[]): ILeaderBoard[] {
@@ -51,13 +74,13 @@ class LeaderBoardService implements ILeaderBoards {
     });
   }
 
-  static createBoard(matchesById: IMatch[]): Partial<ILeaderBoard> {
+  static createBoard(matchesById: IMatch[], matchAttribute: string): Partial<ILeaderBoard> {
     const totalGames = matchesById.length;
-    const totalVictories = this.createTotalVictories(matchesById);
-    const totalDraws = this.createTotalDraws(matchesById);
-    const totalLosses = this.createTotalLosses(matchesById);
-    const goalsFavor = this.createGoalsFavor(matchesById);
-    const goalsOwn = this.createGoalsOwn(matchesById);
+    const totalVictories = this.createTotalVictories(matchesById, matchAttribute);
+    const totalDraws = this.createTotalDraws(matchesById, matchAttribute);
+    const totalLosses = this.createTotalLosses(matchesById, matchAttribute);
+    const goalsFavor = this.createGoalsFavor(matchesById, matchAttribute);
+    const goalsOwn = this.createGoalsOwn(matchesById, matchAttribute);
     const totalPoints = (totalVictories * 3) + totalDraws;
     const goalsBalance = goalsFavor - goalsOwn;
     const efficiency = Number((totalPoints / (totalGames * 3)) * 100).toFixed(2);
@@ -73,12 +96,12 @@ class LeaderBoardService implements ILeaderBoards {
       efficiency };
   }
 
-  async createLeaderBoard(): Promise<ILeaderBoard | null> {
+  async createLeaderBoard(matchAttribute: string): Promise<ILeaderBoard | null> {
     const teams = await this.teamModel.getAllTeams();
 
     const leaderBoard = await Promise.all(teams?.map(async (team: ITeam) => {
-      const matchesById = await this.model.getMatchHomeTeam(Number(team.id));
-      const createBoard = LeaderBoardService.createBoard(matchesById);
+      const matchesById = await this.model.getMatchHomeTeam(Number(team.id), matchAttribute);
+      const createBoard = LeaderBoardService.createBoard(matchesById, matchAttribute);
       return {
         name: team.teamName,
         ...createBoard,

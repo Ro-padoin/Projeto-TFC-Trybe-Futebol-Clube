@@ -7,9 +7,17 @@ class LeaderBoardController {
     this.service = service;
   }
 
+  // static verifyUrl(originaUrl: string): IMatchAttribute {
+  //   const matchAttribute = originaUrl === '/leaderboard/home'
+  //     ? { homeTeam: 'homeTeam', awayTeam: 'awayTeam' }
+  //     : { homeTeam: 'awayTeam', awayTeam: 'homeTeam' };
+  //   return matchAttribute;
+  // }
+
   async createLeaderBoard(req: Request, res: Response, next: NextFunction) {
     try {
-      const leaderBoard = await this.service.createLeaderBoard();
+      const matchAttribute = req.originalUrl === '/leaderboard/home' ? 'homeTeam' : 'awayTeam';
+      const leaderBoard = await this.service.createLeaderBoard(matchAttribute);
       return res.status(StatusCodes.OK).json(leaderBoard);
     } catch (error) {
       next(error);

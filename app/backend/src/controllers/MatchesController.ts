@@ -40,7 +40,6 @@ class MatchesController {
       const { id } = req.params;
       const { userInfoToken, ...newBody } = req.body;
       const body = Object.keys(newBody).length > 0 ? newBody : { inProgress: false };
-      console.log(body);
       const finished = await this.service.updateGamesInProgress(Number(id), body);
       return res.status(StatusCodes.OK).json(finished);
     } catch (error) {

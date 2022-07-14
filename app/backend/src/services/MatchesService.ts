@@ -43,8 +43,8 @@ class MatchesService implements IMatches {
     return newMatch as unknown as MatchesModel;
   }
 
-  async getMatchHomeTeam(id: number): Promise<IMatch[]> {
-    const matchesById = await this.model.getMatchHomeTeam(id);
+  async getMatchHomeTeam(id: number, matchAttribute: string): Promise<IMatch[]> {
+    const matchesById = await this.model.getMatchHomeTeam(id, matchAttribute);
     return matchesById as unknown as IMatch[];
   }
 
@@ -72,7 +72,6 @@ class MatchesService implements IMatches {
     }
 
     const finished = await this.model.updateGamesInProgress(id, body);
-    console.log({ finished });
     return finished;
   }
 }
