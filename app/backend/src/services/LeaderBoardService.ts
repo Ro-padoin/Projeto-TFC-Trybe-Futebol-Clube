@@ -1,4 +1,4 @@
-import { Op } from 'sequelize/types';
+import { Op } from 'sequelize';
 import { ILeaderBoard, ILeaderBoards, IMatch, IMatches, ITeam } from '../interfaces';
 import TeamsModels from '../repositoryModel/TeamsRepository';
 // import ErrorMiddleware from '../utils/error';
@@ -55,7 +55,7 @@ class LeaderBoardService implements ILeaderBoards {
     return matches.reduce((acc: number, match: IMatch) => {
       const verifyMatchHome = matchAttr === 'homeTeam' || match.homeTeam === matchAttr;
       const verifyMatchAway = matchAttr === 'awayTeam' || match.awayTeam === matchAttr;
-      if (verifyMatchHome) return acc + acc + match.awayTeamGoals;
+      if (verifyMatchHome) return acc + match.awayTeamGoals;
       if (verifyMatchAway) return acc + match.homeTeamGoals;
       return acc;
     }, 0);

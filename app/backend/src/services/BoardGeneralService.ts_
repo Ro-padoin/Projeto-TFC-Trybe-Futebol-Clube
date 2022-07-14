@@ -45,7 +45,7 @@ class BoardGeneralService implements IBoardGeneral {
 
   static createGoalsOwn(matches: IMatch[], id: number): number {
     return matches.reduce((acc: number, match: IMatch) => {
-      if (match.homeTeam === id) return acc + acc + match.awayTeamGoals;
+      if (match.homeTeam === id) return acc + match.awayTeamGoals;
       if (match.awayTeam === id) return acc + match.homeTeamGoals;
       return acc;
     }, 0);
