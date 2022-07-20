@@ -1,4 +1,4 @@
-# Projeto Trybe Futebol CLube!
+# Projeto Trybe Futebol Clube!
 
 <h3> O `TFC` é um site informativo sobre partidas e classificações de futebol! </h3>
 
