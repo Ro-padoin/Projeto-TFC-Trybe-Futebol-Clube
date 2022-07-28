@@ -22,7 +22,7 @@ Projeto desenvolvido no bloco 28 - Modulo 3 - Desenvolvimento em BackEnd na turm
 
 - O back-end deverá implementar regras de negócio para popular adequadamente a tabela disponível no front-end que será exibida para a pessoa usuária do sistema.
 
-Oservações: 
+Observações: 
 
 - O Frontend e o Docker Compose foi fornecido pela Trybe, criamos o DockerFile do Backend e Frontend e ajustamos as configuracoes do Docker Compose;
 - O desenvolvimento de todo o projeto se encontra dentro da pasta `app/backend/src`.
